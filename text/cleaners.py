@@ -107,10 +107,12 @@ def japanese_cleaners2(text):
     return japanese_cleaners(text).replace('ts', 'ʦ').replace('...', '…')
 
 
+g2p = G2p()
+
 def korean_cleaners(text):
     '''Pipeline for Korean text'''
     text = latin_to_hangul(text)
-    g2p = G2p()
+    #g2p = G2p()
     text = g2p(text)
     text = divide_hangul(text)
     text = fix_g2pk2_error(text)
