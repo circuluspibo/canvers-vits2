@@ -9,6 +9,7 @@ import commons
 import utils
 from text import text_to_sequence
 
+import time
 
 def get_text(text, hps):
     text_norm = text_to_sequence(text, hps.data.text_cleaners)
@@ -27,7 +28,7 @@ def main() -> None:
     parser.add_argument(
         "--output-wav-path", required=True, help="Path to write WAV file"
     )
-    parser.add_argument("--text", required=True, type=str, help="Text to synthesize")
+    parser.add_argument("--text", required=False, default="안녕하세요 2024년 5월 8일, 파이브레인 입니다. 라즈베리파이에서 딥러닝 기반으로 음성합성 테스트가 잘 되는지 확인중입니다.", type=str, help="Text to synthesize")
     parser.add_argument("--sid", required=False, type=int, help="Speaker ID to synthesize")
     args = parser.parse_args()
 
@@ -37,6 +38,10 @@ def main() -> None:
     hps = utils.get_hparams_from_file(args.config_path)
 
     phoneme_ids = get_text(args.text, hps)
+
+    start = time.time()
+    print('Starting...')
+     
     text = np.expand_dims(np.array(phoneme_ids, dtype=np.int64), 0)
     text_lengths = np.array([text.shape[1]], dtype=np.int64)
     scales = np.array([0.667, 1.0, 0.8], dtype=np.float32)
@@ -52,6 +57,7 @@ def main() -> None:
         },
     )[0].squeeze((0, 1))
 
+    print(time.time() - start)
     write(data=audio, rate=hps.data.sampling_rate, filename=args.output_wav_path)
 
 
