@@ -1,0 +1,3 @@
+python preprocess.py --text_index 2 --filelists filelists/train_adult.txt filelists/valid_adult.txt filelists/valid_adult.txt --text_cleaners korean_cleaners
+
+
