@@ -27,7 +27,7 @@ def main() -> None:
     parser.add_argument(
         "--output-wav-path", required=True, help="Path to write WAV file"
     )
-    parser.add_argument("--text", required=False, default="안녕하세요. 음성합성 테스트중입니다", type=str, help="Text to synthesize")
+    parser.add_argument("--text", required=False, default="안녕하세요 2024년 5월 8일, 파이브레인입니다. 라즈베리파이에서 딥러닝 기반으로 음성합성 테스트가 잘 되는지 확인중입니다.", type=str, help="Text to synthesize")
     parser.add_argument("--sid", required=False, type=int, help="Speaker ID to synthesize")
     args = parser.parse_args()
 
