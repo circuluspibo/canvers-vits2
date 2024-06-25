@@ -19,10 +19,10 @@ def get_text(text, hps):
     return text_norm
 
 
-CONFIG_PATH = "./configs/ko_adult.json"
-MODEL_PATH = "./logs/ko_adult/G_15000.pth"
+CONFIG_PATH = "./configs/ko_base.json"
+MODEL_PATH = "./logs/ko_base/G_310000.pth"
 TEXT = "인공지능과 함께하는 VITS-2 은 Awesome 한 음성합성 모델입니다."
-SPK_ID = 0
+SPK_ID = 10
 OUTPUT_WAV_PATH = "vits2_test.wav"
 
 hps = utils.get_hparams_from_file(CONFIG_PATH)

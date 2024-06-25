@@ -19,11 +19,13 @@ def get_text(text, hps):
     return text_norm
 
 
-CONFIG_PATH = "./configs/ko_emo.json"
-MODEL_PATH = "./logs/ko_emo/G_200000.pth"
-TEXT = "인공지능과 함께하는 VITS-2 은 Awesome 한 음성합성 모델입니다."
-SPK_ID = 20
-OUTPUT_WAV_PATH = "vits2_test.wav"
+CONFIG_PATH = "./configs/ko_base.json"
+MODEL_PATH = "./logs/ko_base/G_810000.pth"
+#TEXT = "I am artificial intelligent voice made by circulus."
+TEXT = "저는 서큘러스의 AI Voice 모델입니다."
+SPK_ID = 45
+#SPK_ID = 20
+OUTPUT_WAV_PATH = "vits_test"
 
 hps = utils.get_hparams_from_file(CONFIG_PATH)
 
@@ -51,22 +53,26 @@ _ = net_g.eval()
 _ = utils.load_checkpoint(MODEL_PATH, net_g, None)
 
 stn_tst = get_text(TEXT, hps)
-with torch.no_grad():
-    x_tst = stn_tst.unsqueeze(0)
-    x_tst_lengths = torch.LongTensor([stn_tst.size(0)])
-    sid = torch.LongTensor([SPK_ID])
-    audio = (
-        net_g.infer(
-            x_tst,
-            x_tst_lengths,
-            sid=sid,
-            noise_scale=0.667,
-            noise_scale_w=0.8,
-            length_scale=1,
-        )[0][0, 0]
-        .data
-        .float()
-        .numpy()
-    )
 
-write(data=audio, rate=hps.data.sampling_rate, filename=OUTPUT_WAV_PATH)
+with torch.no_grad():
+
+    for i in range(0,SPK_ID):
+
+        x_tst = stn_tst.unsqueeze(0)
+        x_tst_lengths = torch.LongTensor([stn_tst.size(0)])
+        sid = torch.LongTensor([i])
+        audio = (
+            net_g.infer(
+                x_tst,
+                x_tst_lengths,
+                sid=sid,
+                noise_scale=0.667,
+                noise_scale_w=0.8,
+                length_scale=1,
+            )[0][0, 0]
+            .data
+            .float()
+            .numpy()
+        )
+        print(i, 'Writing...')
+        write(data=audio, rate=hps.data.sampling_rate, filename=f"{OUTPUT_WAV_PATH}_{i}.wav")

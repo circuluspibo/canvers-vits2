@@ -220,12 +220,13 @@ def korean_to_lazy_ipa(text):
         text = re.sub(regex, replacement, text)
     return text
 
+g2p = G2p()
 
 def korean_to_ipa(text):
     text = latin_to_hangul(text)
     text = number_to_hangul(text)
-    g2p = G2p()
     text = g2p(text)
     text = fix_g2pk2_error(text)
     text = korean_to_lazy_ipa(text)
+    print(text)
     return text.replace('ʧ','tʃ').replace('ʥ','dʑ')
