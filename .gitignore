@@ -1,2 +1,5 @@
+monotonic_align/__pycache__
+text/__pycache__
+__pycache__
 *.onnx
 logs
