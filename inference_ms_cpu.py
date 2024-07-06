@@ -6,6 +6,7 @@ import utils
 from models import SynthesizerTrn
 from text.symbols import symbols
 from text import text_to_sequence
+import time 
 
 from scipy.io.wavfile import write
 
@@ -20,7 +21,7 @@ def get_text(text, hps):
 
 
 CONFIG_PATH = "./configs/ko_base.json"
-MODEL_PATH = "./logs/ko_base/G_810000.pth"
+MODEL_PATH = "./logs/ko_base/G_1445000.pth"
 #TEXT = "I am artificial intelligent voice made by circulus."
 TEXT = "저는 서큘러스의 AI Voice 모델입니다."
 SPK_ID = 45
@@ -57,7 +58,7 @@ stn_tst = get_text(TEXT, hps)
 with torch.no_grad():
 
     for i in range(0,SPK_ID):
-
+        start = time.time()
         x_tst = stn_tst.unsqueeze(0)
         x_tst_lengths = torch.LongTensor([stn_tst.size(0)])
         sid = torch.LongTensor([i])
@@ -74,5 +75,5 @@ with torch.no_grad():
             .float()
             .numpy()
         )
-        print(i, 'Writing...')
+        print(i, time.time() - start)
         write(data=audio, rate=hps.data.sampling_rate, filename=f"{OUTPUT_WAV_PATH}_{i}.wav")
