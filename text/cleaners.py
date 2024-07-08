@@ -19,6 +19,9 @@ import cn2an
 import pykakasi
 import re
 
+g2p = G2p()
+kks = pykakasi.kakasi()
+
 ipa_en = epitran.Epitran('eng-Latn')
 ipa_ko = epitran.Epitran('kor-Hang')
 ipa_cn = epitran.Epitran('cmn-Hans', cedict_file='./cedict_1_0_ts_utf-8_mdbg.txt')
@@ -28,7 +31,6 @@ ipa_vi = epitran.Epitran('vie-Latn')
 ipa_id = epitran.Epitran('ind-Latn')
 ipa_th = epitran.Epitran('tha-Thai')
 ipa_ru = epitran.Epitran('rus-Cyrl')
-kks = pykakasi.kakasi()
 
 _whitespace_re = re.compile(r'\s+')
 
@@ -153,8 +155,6 @@ def japanese_cleaners(text):
 
 def japanese_cleaners2(text):
     return japanese_cleaners(text).replace('ts', 'ʦ').replace('...', '…')
-
-g2p = G2p()
 
 def korean_cleaners(text):
     '''Pipeline for Korean text'''
