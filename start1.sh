@@ -1,1 +1,1 @@
-CUDA_VISIBLE_DEVICES=0 python train_ms.py -c configs/ko_age.json -m ko_age
+CUDA_VISIBLE_DEVICES=0 python train_ms.py -c configs/id_base.json -m id_base
