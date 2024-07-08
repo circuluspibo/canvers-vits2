@@ -26,7 +26,7 @@ if __name__ == "__main__":
             cleaned_text = text._clean_text(original_text, args.text_cleaners)
             filepaths_and_text[i][args.text_index] = cleaned_text
             filepaths_and_text[i][0] = f"/home/circulus/TTS/{filepaths_and_text[i][0]}" 
-            print(i,filepaths_and_text[i])
+            print(i,cleaned_text)
 
         new_filelist = filelist + "." + args.out_extension
         with open(new_filelist, "w", encoding="utf-8") as f:

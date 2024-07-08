@@ -13,6 +13,22 @@ from text.thai import num_to_thai, latin_to_thai
 from unidecode import unidecode
 from phonemizer import phonemize
 
+from num2words import num2words
+import epitran
+import cn2an
+import pykakasi
+import re
+
+ipa_en = epitran.Epitran('eng-Latn')
+ipa_ko = epitran.Epitran('kor-Hang')
+ipa_cn = epitran.Epitran('cmn-Hans', cedict_file='./cedict_1_0_ts_utf-8_mdbg.txt')
+ipa_ja = epitran.Epitran('jpn-Hrgn')
+
+ipa_vi = epitran.Epitran('vie-Latn')
+ipa_id = epitran.Epitran('ind-Latn')
+ipa_th = epitran.Epitran('tha-Thai')
+ipa_ru = epitran.Epitran('rus-Cyrl')
+kks = pykakasi.kakasi()
 
 _whitespace_re = re.compile(r'\s+')
 
@@ -88,47 +104,52 @@ def english_cleaners(text):
 def english_cleaners2(text):
   return english_to_ipa2(text)
 
-def english_cleaners3(text): # needs espeak - apt-get install espeak
+def espeak_en_cleaners(text): # needs espeak - apt-get install espeak
     text = convert_to_ascii(text)
     text = expand_abbreviations(text.lower())
     phonemes = phonemize(text, language='en-us', backend='espeak', strip=True, preserve_punctuation=True,with_stress=True)
     phonemes = collapse_whitespace(phonemes)
     return phonemes
 
-def russian_cleaners2(text):
+def espeak_ru_cleaners(text):
     text = convert_to_ascii(text)
     text = expand_abbreviations(text.lower())
     phonemes = phonemize(text, language='ru', backend='espeak', strip=True, preserve_punctuation=True,with_stress=True, language_switch='remove-flags',njobs=4)
     phonemes = collapse_whitespace(phonemes)
     return phonemes
 
-def vietnamese_cleaners2(text):
+def espeak_vi_cleaners(text):
     text = convert_to_ascii(text)
     text = expand_abbreviations(text.lower())
     phonemes = phonemize(text, language='vi', backend='espeak', strip=True, preserve_punctuation=True,with_stress=True, language_switch='remove-flags',njobs=4)
     phonemes = collapse_whitespace(phonemes)
     return phonemes
 
-def thai_cleaners2(text): # needs espeak - apt-get install espeak
+def espeak_th_cleaners(text): # needs espeak - apt-get install espeak
     text = convert_to_ascii(text)
     text = expand_abbreviations(text.lower())
     phonemes = phonemize(text, language='th', backend='espeak', strip=True, preserve_punctuation=True,with_stress=True, language_switch='remove-flags',njobs=4)
     phonemes = collapse_whitespace(phonemes)
     return phonemes
 
-def indonesian_cleaners2(text): # needs espeak - apt-get install espeak
+def espeak_id_cleaners(text): # needs espeak - apt-get install espeak
     text = convert_to_ascii(text)
     text = expand_abbreviations(text.lower())
     phonemes = phonemize(text, language='id', backend='espeak', strip=True, preserve_punctuation=True,with_stress=True, language_switch='remove-flags',njobs=4)
     phonemes = collapse_whitespace(phonemes)
     return phonemes
 
+def espeak_ja_cleaners(text): # needs espeak - apt-get install espeak
+    text = convert_to_ascii(text)
+    text = expand_abbreviations(text.lower())
+    phonemes = phonemize(text, language='ja', backend='espeak', strip=True, preserve_punctuation=True,with_stress=True, language_switch='remove-flags',njobs=4)
+    phonemes = collapse_whitespace(phonemes)
+    return phonemes
 
 def japanese_cleaners(text):
     text = japanese_to_romaji_with_accent(text)
     text = re.sub(r'([A-Za-z])$', r'\1.', text)
     return text
-
 
 def japanese_cleaners2(text):
     return japanese_cleaners(text).replace('ts', 'ʦ').replace('...', '…')
@@ -245,6 +266,7 @@ def thai_cleaners(text):
     text = num_to_thai(text)
     text = latin_to_thai(text)
     return text
+
 """
 def vietnamese_cleaners(text):
     text = vi2IPA(text)
@@ -286,3 +308,71 @@ def chinese_dialect_cleaners(text):
     text = re.sub(r'([^\.,!\?\-…~])$', r'\1.', text)
     return text
 '''
+
+"""
+ipa_ar = epitran.Epitran('ara-Arab')
+ipa_fa = epitran.Epitran('fas-Arab')
+ipa_tr = epitran.Epitran('tur-Latn')
+ipa_ml = epitran.Epitran('mal-Mlym')
+
+ipa_fr = epitran.Epitran('fra-Latn')
+ipa_it = epitran.Epitran('ita-Latn')
+ipa_de = epitran.Epitran('deu-Latn')
+ipa_es = epitran.Epitran('spa-Latn')
+
+ipa_pt = epitran.Epitran('por-Latn')
+ipa_pl = epitran.Epitran('pol-Latn')
+ipa_sw = epitran.Epitran('swe-Latn')
+
+
+ipa_mn = epitran.Epitran('mon-Cyrl-bab')
+"""
+
+# Function to extract all the numbers from the given string
+def numCleaner(str, lang):
+	nums = re.findall(r'[-+]?[0-9]+[.]?[0-9]*', str)
+	for num in nums:
+		if "." in num:
+			val = float(num)
+		else:
+			val = int(num)
+		if lang != 'cn':
+			str = str.replace(num, num2words(val, lang=lang))
+		else:
+			str = str.replace(num, cn2an.an2cn(num))
+	return str
+
+def canvers_en_cleaners(text):
+    text = numCleaner(text,'en')
+    return ipa_en.transliterate(text)
+
+def canvers_ja_cleaners(text):
+    result = kks.convert(numCleaner(text,'ja'))
+    text = ""
+    for item in result:
+        text = text + item['hira']
+    return ipa_ja.transliterate(text)
+ 
+def canvers_cn_cleaners(text):
+    text = numCleaner(text,'cn')
+    return ipa_cn.transliterate(text)
+
+def canvers_ko_cleaners(text):
+    text = numCleaner(text,'ko')
+    return ipa_ko.transliterate(text)
+  
+def canvers_vi_cleaners(text):
+    text = numCleaner(text,'vi')
+    return ipa_vi.transliterate(text)
+
+def canvers_id_cleaners(text):
+    text = numCleaner(text,'id')
+    return ipa_id.transliterate(text)
+
+def canvers_th_cleaners(text):
+    text = numCleaner(text,'th')
+    return ipa_th.transliterate(text)
+ 
+def canvers_ru_cleaners(text):
+    text = numCleaner(text,'ru')
+    return ipa_ru.transliterate(text)
