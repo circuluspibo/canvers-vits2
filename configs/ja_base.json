@@ -18,8 +18,8 @@
     },
     "data": {
       "use_mel_posterior_encoder": true,
-      "training_files":"filelists/ja_base_train.txt.cleaned",
-      "validation_files":"filelists/ja_base_valid.txt.cleaned",
+      "training_files":"filelists/ja_train.txt.cleaned",
+      "validation_files":"filelists/ja_valid.txt.cleaned",
       "text_cleaners":["canvers_ja_cleaners"],
       "max_wav_value": 32768.0,
       "sampling_rate": 22050,

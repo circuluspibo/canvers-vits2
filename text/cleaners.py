@@ -1,8 +1,8 @@
 import re
 from text.japanese import japanese_to_romaji_with_accent, japanese_to_ipa, japanese_to_ipa2, japanese_to_ipa3
 from text.korean import latin_to_hangul, number_to_hangul, divide_hangul, korean_to_lazy_ipa, korean_to_ipa, fix_g2pk2_error
-from g2pk2 import G2pk
-from g2p_id import G2pi
+from g2pk2 import G2p as G2pk
+from g2p_id import G2p as G2pi
 from text.mandarin import number_to_chinese, chinese_to_bopomofo, latin_to_bopomofo, chinese_to_romaji, chinese_to_lazy_ipa, chinese_to_ipa, chinese_to_ipa2
 #from text.sanskrit import devanagari_to_ipa
 from text.english import english_to_ipa, english_to_lazy_ipa, english_to_ipa2, english_to_lazy_ipa2
@@ -24,7 +24,7 @@ import re
 
 g2pk = G2pk()
 g2pi = G2pi()
-kks = pykakasi.kakasi()
+g2pj = pykakasi.kakasi()
 
 ipa_en = epitran.Epitran('eng-Latn')
 ipa_ko = epitran.Epitran('kor-Hang')
@@ -385,7 +385,7 @@ def canvers_en_cleaners(text):
 
 def canvers_ja_cleaners(text):
     text = expand_abbreviations(text.lower())
-    result = kks.convert(numCleaner(text,'ja'))
+    result = g2pj.convert(numCleaner(text,'ja'))
     text = ""
     for item in result:
         text = text + item['hira']
