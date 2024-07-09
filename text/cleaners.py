@@ -101,7 +101,7 @@ def basic_cleaners(text):
     text = collapse_whitespace(text)
     return text
 
-'''
+
 def fix_g2pk2_error(text):
     new_text = ""
     i = 0
@@ -115,7 +115,6 @@ def fix_g2pk2_error(text):
 
     new_text += text[i:]
     return new_text
-'''
 
 def english_cleaners(text):
   return english_to_ipa(text)
