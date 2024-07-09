@@ -1,18 +1,20 @@
 import re
 from text.japanese import japanese_to_romaji_with_accent, japanese_to_ipa, japanese_to_ipa2, japanese_to_ipa3
 from text.korean import latin_to_hangul, number_to_hangul, divide_hangul, korean_to_lazy_ipa, korean_to_ipa, fix_g2pk2_error
-from g2pk2 import G2p
+from g2pk2 import G2pk
+from g2p_id import G2pi
 from text.mandarin import number_to_chinese, chinese_to_bopomofo, latin_to_bopomofo, chinese_to_romaji, chinese_to_lazy_ipa, chinese_to_ipa, chinese_to_ipa2
 #from text.sanskrit import devanagari_to_ipa
 from text.english import english_to_ipa, english_to_lazy_ipa, english_to_ipa2, english_to_lazy_ipa2
 from text.thai import num_to_thai, latin_to_thai
-#from viphoneme import vi2IPA
+from text.russian import normalize_russian
+#
 #from text.shanghainese import shanghainese_to_ipa
 #from text.cantonese import cantonese_to_ipa
 #from text.ngu_dialect import ngu_dialect_to_ipa
 from unidecode import unidecode
 from phonemizer import phonemize
-
+from viphoneme import vi2IPA
 from num2words import num2words
 import epitran
 import cn2an
@@ -20,7 +22,8 @@ import pykakasi
 import eng_to_ipa as ipa
 import re
 
-g2p = G2p()
+g2pk = G2pk()
+g2pi = G2pi()
 kks = pykakasi.kakasi()
 
 ipa_en = epitran.Epitran('eng-Latn')
@@ -123,6 +126,7 @@ def english_cleaners2(text):
 def espeak_en_cleaners(text): # needs espeak - apt-get install espeak
     text = convert_to_ascii(text)
     text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'en')
     phonemes = phonemize(text, language='en-us', backend='espeak', strip=True, preserve_punctuation=True,with_stress=True)
     phonemes = collapse_whitespace(phonemes)
     return phonemes
@@ -130,6 +134,7 @@ def espeak_en_cleaners(text): # needs espeak - apt-get install espeak
 def espeak_ru_cleaners(text):
     text = convert_to_ascii(text)
     text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'ru')
     phonemes = phonemize(text, language='ru', backend='espeak', strip=True, preserve_punctuation=True,with_stress=True, language_switch='remove-flags',njobs=4)
     phonemes = collapse_whitespace(phonemes)
     return phonemes
@@ -137,6 +142,7 @@ def espeak_ru_cleaners(text):
 def espeak_vi_cleaners(text):
     text = convert_to_ascii(text)
     text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'vi')
     phonemes = phonemize(text, language='vi', backend='espeak', strip=True, preserve_punctuation=True,with_stress=True, language_switch='remove-flags',njobs=4)
     phonemes = collapse_whitespace(phonemes)
     return phonemes
@@ -144,6 +150,7 @@ def espeak_vi_cleaners(text):
 def espeak_th_cleaners(text): # needs espeak - apt-get install espeak
     text = convert_to_ascii(text)
     text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'th')
     phonemes = phonemize(text, language='th', backend='espeak', strip=True, preserve_punctuation=True,with_stress=True, language_switch='remove-flags',njobs=4)
     phonemes = collapse_whitespace(phonemes)
     return phonemes
@@ -151,6 +158,7 @@ def espeak_th_cleaners(text): # needs espeak - apt-get install espeak
 def espeak_id_cleaners(text): # needs espeak - apt-get install espeak
     text = convert_to_ascii(text)
     text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'id')
     phonemes = phonemize(text, language='id', backend='espeak', strip=True, preserve_punctuation=True,with_stress=True, language_switch='remove-flags',njobs=4)
     phonemes = collapse_whitespace(phonemes)
     return phonemes
@@ -158,6 +166,7 @@ def espeak_id_cleaners(text): # needs espeak - apt-get install espeak
 def espeak_ja_cleaners(text): # needs espeak - apt-get install espeak
     text = convert_to_ascii(text)
     text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'ja')
     phonemes = phonemize(text, language='ja', backend='espeak', strip=True, preserve_punctuation=True,with_stress=True, language_switch='remove-flags',njobs=4)
     phonemes = collapse_whitespace(phonemes)
     return phonemes
@@ -165,6 +174,7 @@ def espeak_ja_cleaners(text): # needs espeak - apt-get install espeak
 def espeak_ko_cleaners(text): # needs espeak - apt-get install espeak
     text = convert_to_ascii(text)
     text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'ko')
     phonemes = phonemize(text, language='ko', backend='espeak', strip=True, preserve_punctuation=True,with_stress=True, language_switch='remove-flags',njobs=4)
     phonemes = collapse_whitespace(phonemes)
     return phonemes
@@ -174,13 +184,17 @@ def japanese_cleaners(text):
     text = re.sub(r'([A-Za-z])$', r'\1.', text)
     return text
 
+def russian_cleaners(text):
+    text = normalize_russian(text)
+    return text
+
 def japanese_cleaners2(text):
     return japanese_cleaners(text).replace('ts', 'ʦ').replace('...', '…')
 
 def korean_cleaners(text):
     '''Pipeline for Korean text'''
     text = latin_to_hangul(text)
-    text = g2p(text)
+    text = g2pk(text)
     text = divide_hangul(text)
     text = fix_g2pk2_error(text)
     text = re.sub(r'([\u3131-\u3163])$', r'\1.', text)
@@ -203,6 +217,18 @@ def chinese_cleaners(text):
     text = re.sub(r'([ˉˊˇˋ˙])$', r'\1。', text)
     return text
 
+def thai_cleaners(text):
+    text = num_to_thai(text)
+    text = latin_to_thai(text)
+    return text
+
+def vietnamese_cleaners(text):
+    text = vi2IPA(text)
+    return text
+
+def indonesian_cleaners(text):
+    text = g2pi(text)
+    return text
 
 def sanskrit_cleaners(text):
     text = text.replace('॥', '।').replace('ॐ', 'ओम्')
@@ -282,18 +308,6 @@ def cjke_cleaners2(text):
     text = re.sub(r'\s+$', '', text)
     text = re.sub(r'([^\.,!\?\-…~])$', r'\1.', text)
     return text
-
-def thai_cleaners(text):
-    text = num_to_thai(text)
-    text = latin_to_thai(text)
-    return text
-
-"""
-def vietnamese_cleaners(text):
-    text = vi2IPA(text)
-    return text
-"""
-
 
 
 
