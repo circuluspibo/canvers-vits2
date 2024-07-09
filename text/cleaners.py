@@ -17,6 +17,7 @@ from num2words import num2words
 import epitran
 import cn2an
 import pykakasi
+import eng_to_ipa as ipa
 import re
 
 g2p = G2p()
@@ -31,6 +32,19 @@ ipa_vi = epitran.Epitran('vie-Latn')
 ipa_id = epitran.Epitran('ind-Latn')
 ipa_th = epitran.Epitran('tha-Thai')
 ipa_ru = epitran.Epitran('rus-Cyrl')
+
+"""
+ipa_ar = epitran.Epitran('ara-Arab')
+ipa_fa = epitran.Epitran('fas-Arab')
+ipa_tr = epitran.Epitran('tur-Latn')
+ipa_pt = epitran.Epitran('por-Latn')
+
+ipa_fr = epitran.Epitran('fra-Latn')
+ipa_it = epitran.Epitran('ita-Latn')
+ipa_de = epitran.Epitran('deu-Latn')
+ipa_es = epitran.Epitran('spa-Latn')
+"""
+
 
 _whitespace_re = re.compile(r'\s+')
 
@@ -145,6 +159,13 @@ def espeak_ja_cleaners(text): # needs espeak - apt-get install espeak
     text = convert_to_ascii(text)
     text = expand_abbreviations(text.lower())
     phonemes = phonemize(text, language='ja', backend='espeak', strip=True, preserve_punctuation=True,with_stress=True, language_switch='remove-flags',njobs=4)
+    phonemes = collapse_whitespace(phonemes)
+    return phonemes
+
+def espeak_ko_cleaners(text): # needs espeak - apt-get install espeak
+    text = convert_to_ascii(text)
+    text = expand_abbreviations(text.lower())
+    phonemes = phonemize(text, language='ko', backend='espeak', strip=True, preserve_punctuation=True,with_stress=True, language_switch='remove-flags',njobs=4)
     phonemes = collapse_whitespace(phonemes)
     return phonemes
 
@@ -313,16 +334,17 @@ def chinese_dialect_cleaners(text):
 ipa_ar = epitran.Epitran('ara-Arab')
 ipa_fa = epitran.Epitran('fas-Arab')
 ipa_tr = epitran.Epitran('tur-Latn')
-ipa_ml = epitran.Epitran('mal-Mlym')
+ipa_pt = epitran.Epitran('por-Latn')
 
 ipa_fr = epitran.Epitran('fra-Latn')
 ipa_it = epitran.Epitran('ita-Latn')
 ipa_de = epitran.Epitran('deu-Latn')
 ipa_es = epitran.Epitran('spa-Latn')
 
-ipa_pt = epitran.Epitran('por-Latn')
-ipa_pl = epitran.Epitran('pol-Latn')
-ipa_sw = epitran.Epitran('swe-Latn')
+
+ipa_pl = epitran.Epitran('pol-Latn') #
+ipa_ml = epitran.Epitran('mal-Mlym') #
+ipa_sw = epitran.Epitran('swe-Latn') #
 
 
 ipa_mn = epitran.Epitran('mon-Cyrl-bab')
@@ -343,36 +365,52 @@ def numCleaner(str, lang):
 	return str
 
 def canvers_en_cleaners(text):
+    text = expand_abbreviations(text.lower())
     text = numCleaner(text,'en')
-    return ipa_en.transliterate(text)
+    phonemes = ipa.convert(text) #ipa_en.transliterate(text)
+    return collapse_whitespace(phonemes)
 
 def canvers_ja_cleaners(text):
+    text = expand_abbreviations(text.lower())
     result = kks.convert(numCleaner(text,'ja'))
     text = ""
     for item in result:
         text = text + item['hira']
-    return ipa_ja.transliterate(text)
+    phonemes = ipa_ja.transliterate(text)
+    return collapse_whitespace(phonemes)
  
 def canvers_cn_cleaners(text):
+    text = expand_abbreviations(text.lower())
     text = numCleaner(text,'cn')
-    return ipa_cn.transliterate(text)
+    phonemes = ipa_cn.transliterate(text)
+    return collapse_whitespace(phonemes)
 
 def canvers_ko_cleaners(text):
+    text = expand_abbreviations(text.lower())
     text = numCleaner(text,'ko')
-    return ipa_ko.transliterate(text)
+    phonemes = ipa_ko.transliterate(text)
+    return collapse_whitespace(phonemes)
   
 def canvers_vi_cleaners(text):
+    text = expand_abbreviations(text.lower())
     text = numCleaner(text,'vi')
-    return ipa_vi.transliterate(text)
+    phonemes = ipa_vi.transliterate(text)
+    return collapse_whitespace(phonemes)
 
 def canvers_id_cleaners(text):
+    text = expand_abbreviations(text.lower())
     text = numCleaner(text,'id')
-    return ipa_id.transliterate(text)
+    phonemes = ipa_id.transliterate(text)
+    return collapse_whitespace(phonemes)
 
 def canvers_th_cleaners(text):
+    text = expand_abbreviations(text.lower())
     text = numCleaner(text,'th')
-    return ipa_th.transliterate(text)
+    phonemes = ipa_th.transliterate(text)
+    return collapse_whitespace(phonemes)
  
 def canvers_ru_cleaners(text):
+    text = expand_abbreviations(text.lower())
     text = numCleaner(text,'ru')
-    return ipa_ru.transliterate(text)
+    phonemes = ipa_ru.transliterate(text)
+    return collapse_whitespace(phonemes)
