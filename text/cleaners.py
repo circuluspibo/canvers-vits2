@@ -36,22 +36,23 @@ ipa_ko = epitran.Epitran('kor-Hang')
 ipa_cn = epitran.Epitran('cmn-Hans', cedict_file='./cedict_1_0_ts_utf-8_mdbg.txt')
 ipa_ja = epitran.Epitran('jpn-Hrgn')
 
+ipa_ar = epitran.Epitran('ara-Arab')
+ipa_es = epitran.Epitran('spa-Latn')
+ipa_pt = epitran.Epitran('por-Latn')
+ipa_fr = epitran.Epitran('fra-Latn')
+
+ipa_de = epitran.Epitran('deu-Latn')
+ipa_it = epitran.Epitran('ita-Latn')
+
+ipa_fa = epitran.Epitran('fas-Arab')
+ipa_tr = epitran.Epitran('tur-Latn')
+
 ipa_vi = epitran.Epitran('vie-Latn')
 ipa_id = epitran.Epitran('ind-Latn')
 ipa_th = epitran.Epitran('tha-Thai')
 ipa_ru = epitran.Epitran('rus-Cyrl')
 
-"""
-ipa_ar = epitran.Epitran('ara-Arab')
-ipa_fa = epitran.Epitran('fas-Arab')
-ipa_tr = epitran.Epitran('tur-Latn')
-ipa_pt = epitran.Epitran('por-Latn')
 
-ipa_fr = epitran.Epitran('fra-Latn')
-ipa_it = epitran.Epitran('ita-Latn')
-ipa_de = epitran.Epitran('deu-Latn')
-ipa_es = epitran.Epitran('spa-Latn')
-"""
 
 
 _whitespace_re = re.compile(r'\s+')
@@ -408,7 +409,34 @@ def canvers_ko_cleaners(text):
     text = numCleaner(text,'ko')
     phonemes = ipa_ko.transliterate(text)
     return collapse_whitespace(phonemes)
-  
+
+
+def canvers_ar_cleaners(text):
+    text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'ar')
+    phonemes = ipa_ar.transliterate(text)
+    return collapse_whitespace(phonemes)
+
+def canvers_es_cleaners(text):
+    text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'es')
+    phonemes = ipa_es.transliterate(text)
+    return collapse_whitespace(phonemes)
+
+def canvers_pt_cleaners(text):
+    text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'pt')
+    phonemes = ipa_pt.transliterate(text)
+    return collapse_whitespace(phonemes)
+ 
+def canvers_fr_cleaners(text):
+    text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'fr')
+    phonemes = ipa_fr.transliterate(text)
+    return collapse_whitespace(phonemes)
+
+
+
 def canvers_vi_cleaners(text):
     text = expand_abbreviations(text.lower())
     text = numCleaner(text,'vi')
