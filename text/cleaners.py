@@ -1,29 +1,34 @@
 import re
-from text.japanese import japanese_to_romaji_with_accent, japanese_to_ipa, japanese_to_ipa2, japanese_to_ipa3
+#from text.japanese import japanese_to_romaji_with_accent, japanese_to_ipa, japanese_to_ipa2, japanese_to_ipa3
 from text.korean import latin_to_hangul, number_to_hangul, divide_hangul, korean_to_lazy_ipa, korean_to_ipa, fix_g2pk2_error
-from g2pk2 import G2p as G2pk
-from g2p_id import G2p as G2pi
+#from g2pk2 import G2p as G2pk
+#from g2p_id import G2p as G2pi
 from text.mandarin import number_to_chinese, chinese_to_bopomofo, latin_to_bopomofo, chinese_to_romaji, chinese_to_lazy_ipa, chinese_to_ipa, chinese_to_ipa2
 #from text.sanskrit import devanagari_to_ipa
 from text.english import english_to_ipa, english_to_lazy_ipa, english_to_ipa2, english_to_lazy_ipa2
-from text.thai import num_to_thai, latin_to_thai
-from text.russian import normalize_russian
+#from text.thai import num_to_thai, latin_to_thai
+#from text.russian import normalize_russian
 #
 #from text.shanghainese import shanghainese_to_ipa
 #from text.cantonese import cantonese_to_ipa
 #from text.ngu_dialect import ngu_dialect_to_ipa
 from unidecode import unidecode
 from phonemizer import phonemize
-from viphoneme import vi2IPA
+#from viphoneme import vi2IPA
 from num2words import num2words
 import epitran
 import cn2an
 import pykakasi
-import eng_to_ipa as ipa
+#import eng_to_ipa as ipa
 import re
 
-g2pk = G2pk()
-g2pi = G2pi()
+vi2IPA = None
+
+#g2pk = G2pk()
+#g2pi = G2pi()
+g2pk = None
+g2pi = None
+
 g2pj = pykakasi.kakasi()
 
 ipa_en = epitran.Epitran('eng-Latn')
