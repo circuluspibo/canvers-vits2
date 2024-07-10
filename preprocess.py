@@ -10,8 +10,8 @@ if __name__ == "__main__":
         "--filelists",
         nargs="+",
         default=[
-            "filelists/ljs_audio_text_val_filelist.txt",
-            "filelists/ljs_audio_text_test_filelist.txt",
+            "filelists/train_age.txt",
+            "filelists/valid_age.txt",
         ],
     )
     parser.add_argument("--text_cleaners", nargs="+", default=["english_cleaners2"])
@@ -25,7 +25,9 @@ if __name__ == "__main__":
             original_text = filepaths_and_text[i][args.text_index]
             cleaned_text = text._clean_text(original_text, args.text_cleaners)
             filepaths_and_text[i][args.text_index] = cleaned_text
-            filepaths_and_text[i][0] = f"/home/circulus/TTS/{filepaths_and_text[i][0]}" 
+            #filepaths_and_text[i][1] = str(int(filepaths_and_text[i][1]) + 53)
+            #filepaths_and_text[i][0] = f"/home/circulus/TTS/{filepaths_and_text[i][0]}" 
+            filepaths_and_text[i][0] = f"{filepaths_and_text[i][0]}" 
             print(i,cleaned_text)
 
         new_filelist = filelist + "." + args.out_extension
