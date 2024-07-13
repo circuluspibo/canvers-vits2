@@ -19,14 +19,14 @@ def get_text(text, hps):
     text_norm = torch.LongTensor(text_norm)
     return text_norm
 
-
-CONFIG_PATH = "./configs/ko_base.json"
-MODEL_PATH = "./logs/ko_base/G_1445000.pth"
+LANG = 'ko'
+CONFIG_PATH = f"./configs/{LANG}_base.json"
+MODEL_PATH = f"./logs/{LANG}_base/G_1445000.pth"
 #TEXT = "I am artificial intelligent voice made by circulus."
 TEXT = "저는 서큘러스의 AI Voice 모델입니다."
-SPK_ID = 45
+#SPK_ID = 45
 #SPK_ID = 20
-OUTPUT_WAV_PATH = "vits_test"
+#OUTPUT_WAV_PATH = "vits_test"
 
 hps = utils.get_hparams_from_file(CONFIG_PATH)
 
@@ -57,7 +57,7 @@ stn_tst = get_text(TEXT, hps)
 
 with torch.no_grad():
 
-    for i in range(0,SPK_ID):
+    for i in range(0,hps.data.n_speakers):
         start = time.time()
         x_tst = stn_tst.unsqueeze(0)
         x_tst_lengths = torch.LongTensor([stn_tst.size(0)])
@@ -76,4 +76,4 @@ with torch.no_grad():
             .numpy()
         )
         print(i, time.time() - start)
-        write(data=audio, rate=hps.data.sampling_rate, filename=f"{OUTPUT_WAV_PATH}_{i}.wav")
+        write(data=audio, rate=hps.data.sampling_rate, filename=f"test_{LANG}_{i}.wav")

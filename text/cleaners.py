@@ -386,7 +386,7 @@ def numCleaner(str, lang):
 def canvers_en_cleaners(text):
     text = expand_abbreviations(text.lower())
     text = numCleaner(text,'en')
-    phonemes = ipa.convert(text) #ipa_en.transliterate(text)
+    phonemes = ipa_en.transliterate(text) #ipa.convert(text)
     return collapse_whitespace(phonemes)
 
 def canvers_ja_cleaners(text):
@@ -409,7 +409,6 @@ def canvers_ko_cleaners(text):
     text = numCleaner(text,'ko')
     phonemes = ipa_ko.transliterate(text)
     return collapse_whitespace(phonemes)
-
 
 def canvers_ar_cleaners(text):
     text = expand_abbreviations(text.lower())
@@ -434,7 +433,6 @@ def canvers_fr_cleaners(text):
     text = numCleaner(text,'fr')
     phonemes = ipa_fr.transliterate(text)
     return collapse_whitespace(phonemes)
-
 
 
 def canvers_vi_cleaners(text):
