@@ -8,14 +8,14 @@ dict = {}
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--out_extension", default="cleaned")
-    parser.add_argument("--text_index", default=2, type=int)
+    parser.add_argument("--text_index", default=1, type=int)
     parser.add_argument(
         "--filelists",
         nargs="+",
         default=[
             #"filelists/train_age.txt",
             #"filelists/valid2_age.txt",
-            "/home/circulus/DATASET/TTS/ko/script_age.txt"
+            "/home/circulus/DATASET/TTS/ko/trans_ko.txt"
         ],
     )
     parser.add_argument("--text_cleaners", nargs="+", default=["canvers_ko_cleaners"])
@@ -31,14 +31,8 @@ if __name__ == "__main__":
             cleaned_text = text._clean_text(original_text, args.text_cleaners)
             filepaths_and_text[i][args.text_index] = cleaned_text
 
-            token = filepaths_and_text[i][1]
-            if f'_{token}' not in dict:
-                dict[f'_{token}'] = st
-                st = st + 1
-
-            filepaths_and_text[i][1] = str(dict[f'_{token}'] + 53)
             #filepaths_and_text[i][0] = f"/home/circulus/TTS/{filepaths_and_text[i][0]}" 
-            filepaths_and_text[i][0] = f"/home/circulus/TTS/ko/{token}/{filepaths_and_text[i][0]}" 
+            filepaths_and_text[i][0] = f"{filepaths_and_text[i][0]}" 
             #filepaths_and_text[i][0] = f"{filepaths_and_text[i][0]}" 
             print(i,filepaths_and_text[i])
 
