@@ -31,29 +31,37 @@ import re
 
 g2pj = pykakasi.kakasi()
 
-ipa_en = epitran.Epitran('eng-Latn')
+
 ipa_ko = epitran.Epitran('kor-Hang')
+ipa_en = epitran.Epitran('eng-Latn')
+
 ipa_cn = epitran.Epitran('cmn-Hans', cedict_file='./cedict_1_0_ts_utf-8_mdbg.txt')
 ipa_ja = epitran.Epitran('jpn-Hrgn')
-
 ipa_ar = epitran.Epitran('ara-Arab')
 ipa_es = epitran.Epitran('spa-Latn')
+
 ipa_pt = epitran.Epitran('por-Latn')
 ipa_fr = epitran.Epitran('fra-Latn')
-
 ipa_de = epitran.Epitran('deu-Latn')
 ipa_it = epitran.Epitran('ita-Latn')
 
 ipa_fa = epitran.Epitran('fas-Arab')
 ipa_tr = epitran.Epitran('tur-Latn')
-
 ipa_vi = epitran.Epitran('vie-Latn')
 ipa_id = epitran.Epitran('ind-Latn')
+
 ipa_th = epitran.Epitran('tha-Thai')
 ipa_ru = epitran.Epitran('rus-Cyrl')
+ipa_hu = epitran.Epitran('hun-Latn') #
+ipa_pl = epitran.Epitran('pol-Latn') #
 
+ipa_cz = epitran.Epitran('ces-Latn') #
+ipa_uk = epitran.Epitran('ukr-Cyrl') #
+ipa_fi = epitran.Epitran('fin-Latn') #
+ipa_sv = epitran.Epitran('swe-Latn') #
 
-
+ipa_km = epitran.Epitran('khm-Khmr') #
+ipa_mn = epitran.Epitran('mon-Cyrl-bab') #
 
 _whitespace_re = re.compile(r'\s+')
 
@@ -351,26 +359,6 @@ def chinese_dialect_cleaners(text):
     return text
 '''
 
-"""
-ipa_ar = epitran.Epitran('ara-Arab')
-ipa_fa = epitran.Epitran('fas-Arab')
-ipa_tr = epitran.Epitran('tur-Latn')
-ipa_pt = epitran.Epitran('por-Latn')
-
-ipa_fr = epitran.Epitran('fra-Latn')
-ipa_it = epitran.Epitran('ita-Latn')
-ipa_de = epitran.Epitran('deu-Latn')
-ipa_es = epitran.Epitran('spa-Latn')
-
-
-ipa_pl = epitran.Epitran('pol-Latn') #
-ipa_ml = epitran.Epitran('mal-Mlym') #
-ipa_sw = epitran.Epitran('swe-Latn') #
-
-
-ipa_mn = epitran.Epitran('mon-Cyrl-bab')
-"""
-
 # Function to extract all the numbers from the given string
 def numCleaner(str, lang):
 	nums = re.findall(r'[-+]?[0-9]+[.]?[0-9]*', str)
@@ -412,6 +400,7 @@ def canvers_ko_cleaners(text):
     phonemes = ipa_ko.transliterate(text)
     return collapse_whitespace(phonemes)
 
+
 def canvers_ar_cleaners(text):
     text = expand_abbreviations(text.lower())
     text = numCleaner(text,'ar')
@@ -437,6 +426,7 @@ def canvers_fr_cleaners(text):
     return collapse_whitespace(phonemes)
 
 
+
 def canvers_vi_cleaners(text):
     text = expand_abbreviations(text.lower())
     text = numCleaner(text,'vi')
@@ -460,3 +450,66 @@ def canvers_ru_cleaners(text):
     text = numCleaner(text,'ru')
     phonemes = ipa_ru.transliterate(text)
     return collapse_whitespace(phonemes)
+
+
+def canvers_fa_cleaners(text):
+    text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'fa')
+    phonemes = ipa_fa.transliterate(text)
+    return collapse_whitespace(phonemes)
+ 
+def canvers_tr_cleaners(text):
+    text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'tr')
+    phonemes = ipa_tr.transliterate(text)
+    return collapse_whitespace(phonemes)
+
+def canvers_de_cleaners(text):
+    text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'de')
+    phonemes = ipa_de.transliterate(text)
+    return collapse_whitespace(phonemes)
+ 
+def canvers_it_cleaners(text):
+    text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'it')
+    phonemes = ipa_it.transliterate(text)
+    return collapse_whitespace(phonemes)
+
+
+def canvers_cz_cleaners(text):
+    text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'cz')
+    phonemes = ipa_cz.transliterate(text)
+    return collapse_whitespace(phonemes)
+ 
+def canvers_pl_cleaners(text):
+    text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'pl')
+    phonemes = ipa_pl.transliterate(text)
+    return collapse_whitespace(phonemes)
+
+def canvers_hu_cleaners(text):
+    text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'hu')
+    phonemes = ipa_hu.transliterate(text)
+    return collapse_whitespace(phonemes)
+
+def canvers_uk_cleaners(text):
+    text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'uk')
+    phonemes = ipa_uk.transliterate(text)
+    return collapse_whitespace(phonemes)
+ 
+def canvers_fi_cleaners(text):
+    text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'fi')
+    phonemes = ipa_fi.transliterate(text)
+    return collapse_whitespace(phonemes)
+
+def canvers_sv_cleaners(text):
+    text = expand_abbreviations(text.lower())
+    text = numCleaner(text,'sv')
+    phonemes = ipa_sv.transliterate(text)
+    return collapse_whitespace(phonemes)
+
