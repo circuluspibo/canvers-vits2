@@ -513,3 +513,16 @@ def canvers_sv_cleaners(text):
     phonemes = ipa_sv.transliterate(text)
     return collapse_whitespace(phonemes)
 
+
+def canvers_km_cleaners(text):
+    text = expand_abbreviations(text.lower())
+    #text = numCleaner(text,'fi')
+    phonemes = ipa_km.transliterate(text)
+    return collapse_whitespace(phonemes)
+
+def canvers_mn_cleaners(text):
+    text = expand_abbreviations(text.lower())
+    #text = numCleaner(text,'sv')
+    phonemes = ipa_mn.transliterate(text)
+    return collapse_whitespace(phonemes)
+
