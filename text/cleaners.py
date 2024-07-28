@@ -55,7 +55,7 @@ ipa_ru = epitran.Epitran('rus-Cyrl')
 ipa_hu = epitran.Epitran('hun-Latn') #
 ipa_pl = epitran.Epitran('pol-Latn') #
 
-ipa_cz = epitran.Epitran('ces-Latn') #
+ipa_cs = epitran.Epitran('ces-Latn') #
 ipa_uk = epitran.Epitran('ukr-Cyrl') #
 ipa_fi = epitran.Epitran('fin-Latn') #
 ipa_sv = epitran.Epitran('swe-Latn') #
@@ -361,7 +361,7 @@ def chinese_dialect_cleaners(text):
 
 # Function to extract all the numbers from the given string
 def numCleaner(str, lang):
-	nums = re.findall(r'[-+]?[0-9]+[.]?[0-9]*', str)
+	nums = re.findall(r'[0-9]+[.]?[0-9]*', str) #[-+]?
 	for num in nums:
 		if "." in num:
 			val = float(num)
@@ -477,10 +477,10 @@ def canvers_it_cleaners(text):
     return collapse_whitespace(phonemes)
 
 
-def canvers_cz_cleaners(text):
+def canvers_cs_cleaners(text):
     text = expand_abbreviations(text.lower())
     text = numCleaner(text,'cz')
-    phonemes = ipa_cz.transliterate(text)
+    phonemes = ipa_cs.transliterate(text)
     return collapse_whitespace(phonemes)
  
 def canvers_pl_cleaners(text):
